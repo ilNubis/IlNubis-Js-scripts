@@ -25,7 +25,7 @@ class AssertLib {
         //     assertTypeArgs([
         //       "something",
         //       ["foo", foo, "object"], 
-        //       ["bar", bar, ["string", undefined]],
+        //       ["bar", bar, ["string", "undefined"]],
         //       ["fuzz", fuzz, ["string", "number"]] 
         //     ]);
         //   }
