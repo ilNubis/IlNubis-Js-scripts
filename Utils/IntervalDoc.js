@@ -37,7 +37,7 @@ class IntervalDoc {
             "IntervalDoc.getElementByid()",
             ["elemId", elemId, "string"],
             ["func", func, "function"],
-            ["opz", opz, ["object", undefined]]
+            ["opz", opz, ["object", "undefined"]]
         ]);
 
         UnsafeDoc.mergeOpz(opz, UnsafeDoc._opzPreset);
@@ -66,7 +66,7 @@ class IntervalDoc {
             "IntervalDoc.getElementsByClassName()",
             ["elemClassName", elemClassName, "string"],
             ["func", func, "function"],
-            ["opz", opz, ["object", undefined]]
+            ["opz", opz, ["object", "undefined"]]
         ]);
 
         UnsafeDoc.mergeOpz(opz, UnsafeDoc._opzPreset);
@@ -96,7 +96,7 @@ class IntervalDoc {
             "IntervalDoc.getElementsByTagName()",
             ["elemTagName", elemTagName, "string"],
             ["func", func, "function"],
-            ["opz", opz, ["object", undefined]]
+            ["opz", opz, ["object", "undefined"]]
         ]);
 
         UnsafeDoc.mergeOpz(opz, UnsafeDoc._opzPreset);
