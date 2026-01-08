@@ -40,7 +40,7 @@ class IntervalDoc {
             ["opz", opz, ["object", "undefined"]]
         ]);
 
-        UnsafeDoc.mergeOpz(opz, UnsafeDoc._opzPreset);
+        IntervalDoc.mergeOpz(opz, IntervalDoc._opzPreset);
 
         var elem = undefined;
 
@@ -69,7 +69,7 @@ class IntervalDoc {
             ["opz", opz, ["object", "undefined"]]
         ]);
 
-        UnsafeDoc.mergeOpz(opz, UnsafeDoc._opzPreset);
+        IntervalDoc.mergeOpz(opz, IntervalDoc._opzPreset);
 
         var elems = undefined;
 
@@ -99,7 +99,7 @@ class IntervalDoc {
             ["opz", opz, ["object", "undefined"]]
         ]);
 
-        UnsafeDoc.mergeOpz(opz, UnsafeDoc._opzPreset);
+        IntervalDoc.mergeOpz(opz, IntervalDoc._opzPreset);
 
         var elems = undefined;
 
