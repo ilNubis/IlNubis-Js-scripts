@@ -41,6 +41,3 @@ for (const ep of mixedEpisodes) {
 for (const ep of fillerEpisodes) {
   bleachEpisodeData.set(ep, 2);
 }
-console.log('🚀 ~ :35 ~ bleachEpisodeData:', bleachEpisodeData.get(8));
-
-export default bleachEpisodeData;
