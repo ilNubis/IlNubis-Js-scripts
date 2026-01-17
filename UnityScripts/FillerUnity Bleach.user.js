@@ -9,7 +9,7 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=animeunity.so
 // @updateURL    https://raw.githubusercontent.com/uniboxx/IlNubis-Js-scripts/refs/heads/refactoring/UnityScripts/FillerUnity%20Bleach.user.js
 // @downloadURL  https://raw.githubusercontent.com/uniboxx/IlNubis-Js-scripts/refs/heads/refactoring/UnityScripts/FillerUnity%20Bleach.user.js
-// @require      https://raw.githubusercontent.com/uniboxx/IlNubis-Js-scripts/refs/heads/refactoring/UnityScripts/data.js
+// @require      https://raw.githubusercontent.com/uniboxx/IlNubis-Js-scripts/refs/heads/refactoring/UnityScripts/episodesData.js
 // @require      https://raw.githubusercontent.com/uniboxx/IlNubis-Js-scripts/refs/heads/refactoring/Utils/AssertLib.js
 // @run-at       document-end
 // @grant        none
