@@ -36,12 +36,12 @@ const mixedId = 1;
 const fillerId = 2;
 
 const bleachEpisodeData = new Map();
-for (const ep of canonEpisodes) {
+canonEpisodes.forEach((ep) => {
   bleachEpisodeData.set(ep, canonId);
-}
-for (const ep of mixedEpisodes) {
+});
+mixedEpisodes.forEach((ep) => {
   bleachEpisodeData.set(ep, mixedId);
-}
-for (const ep of fillerEpisodes) {
+});
+fillerEpisodes.forEach((ep) => {
   bleachEpisodeData.set(ep, fillerId);
-}
+});
