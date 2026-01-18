@@ -49,12 +49,16 @@
   const seenFillerClass = 'seen-filler';
   const activeFillerClass = 'active-filler';
 
-  const neutralById = [episodeNeutral, neutralMixedClass, neutralFillerClass];
-  const seenById = [episodeSeen, seenMixedClass, seenFillerClass];
-  const activeById = [episodeActive, activeMixedClass, activeFillerClass];
+  const neutralClasses = [
+    episodeNeutral,
+    neutralMixedClass,
+    neutralFillerClass,
+  ];
+  const seenClasses = [episodeSeen, seenMixedClass, seenFillerClass];
+  const activeClasses = [episodeActive, activeMixedClass, activeFillerClass];
 
-  // check length of identifiers arrays
-  Object.entries({ neutralById, seenById, activeById }).forEach(
+  // check length of classes arrays
+  Object.entries({ neutralClasses, seenClasses, activeClasses }).forEach(
     ([key, value]) => {
       AssertLib.assert(value.length === 3, `[${key}]: Unexpected length`);
     },
@@ -99,6 +103,8 @@
 }
 `;
 
+  // OBSERVER FUNCTIONS
+
   function onTextChange(elem, callback) {
     const observer = new MutationObserver((records) => {
       callback(elem);
@@ -141,65 +147,74 @@
   // mixedId === 1;
   // fillerId === 2;
 
-  function is_valid_id(id) {
-    return id >= canonId && id <= fillerId;
+  // check if identifier is valid
+  function isValidIdentifier(identifier) {
+    return identifier >= canonId && identifier <= fillerId;
   }
 
-  function is_neutral(episode_class) {
-    if (episode_class.contains(neutralById[canonId])) {
+  // check if episode is neutral
+  function isNeutral(episode_classes) {
+    // if (episode_classes.contains(neutralClasses[canonId])) {
+    //   return canonId;
+    // }
+
+    // if (episode_classes.contains(neutralClasses[mixedId])) {
+    //   return mixedId;
+    // }
+
+    // if (episode_classes.contains(neutralClasses[fillerId])) {
+    //   return fillerId;
+    // }
+    let result;
+    neutralClasses.forEach((_, idx) => {
+      if (episode_classes.contains(neutralClasses[idx])) {
+        result = idx;
+      } else {
+        result = null;
+      }
+    });
+    return result;
+  }
+
+  function is_seen(episode_classes) {
+    if (episode_classes.contains(seenClasses[canonId])) {
       return canonId;
     }
 
-    if (episode_class.contains(neutralById[mixedId])) {
+    if (episode_classes.contains(seenClasses[mixedId])) {
       return mixedId;
     }
 
-    if (episode_class.contains(neutralById[fillerId])) {
+    if (episode_classes.contains(seenClasses[fillerId])) {
       return fillerId;
     }
 
     return null;
   }
 
-  function is_seen(episode_class) {
-    if (episode_class.contains(seenById[canonId])) {
+  function is_active(episode_classes) {
+    if (episode_classes.contains(activeClasses[canonId])) {
       return canonId;
     }
 
-    if (episode_class.contains(seenById[mixedId])) {
+    if (episode_classes.contains(activeClasses[mixedId])) {
       return mixedId;
     }
 
-    if (episode_class.contains(seenById[fillerId])) {
+    if (episode_classes.contains(activeClasses[fillerId])) {
       return fillerId;
     }
 
     return null;
   }
 
-  function is_active(episode_class) {
-    if (episode_class.contains(activeById[canonId])) {
-      return canonId;
-    }
-
-    if (episode_class.contains(activeById[mixedId])) {
-      return mixedId;
-    }
-
-    if (episode_class.contains(activeById[fillerId])) {
-      return fillerId;
-    }
-
-    return null;
-  }
-
-  function neutral_to_id(episode_class, prev_id, befo_id) {
+  function neutral_to_id(episode_classes, prev_id, befo_id) {
     AssertLib.assert(
-      is_valid_id(prev_id),
+      isValidIdentifier(prev_id),
       '(neutral_to_id): Unexpected prev_id value',
     );
     AssertLib.assert(
-      is_valid_id(befo_id),
+      isValidIdentifier(befo_id),
       '(neutral_to_id): Unexpected befo_id value',
     );
 
@@ -207,16 +222,19 @@
       return false;
     }
 
-    return episode_class.replace(neutralById[prev_id], neutralById[befo_id]);
+    return episode_classes.replace(
+      neutralClasses[prev_id],
+      neutralClasses[befo_id],
+    );
   }
 
-  function seen_to_id(episode_class, prev_id, befo_id) {
+  function seen_to_id(episode_classes, prev_id, befo_id) {
     AssertLib.assert(
-      is_valid_id(prev_id),
+      isValidIdentifier(prev_id),
       '(seen_to_id): Unexpected prev_id value',
     );
     AssertLib.assert(
-      is_valid_id(befo_id),
+      isValidIdentifier(befo_id),
       '(seen_to_id): Unexpected befo_id value',
     );
 
@@ -224,16 +242,16 @@
       return false;
     }
 
-    return episode_class.replace(seenById[prev_id], seenById[befo_id]);
+    return episode_classes.replace(seenClasses[prev_id], seenClasses[befo_id]);
   }
 
-  function active_to_id(episode_class, prev_id, befo_id) {
+  function active_to_id(episode_classes, prev_id, befo_id) {
     AssertLib.assert(
-      is_valid_id(prev_id),
+      isValidIdentifier(prev_id),
       '(active_to_id): Unexpected prev_id value',
     );
     AssertLib.assert(
-      is_valid_id(befo_id),
+      isValidIdentifier(befo_id),
       '(active_to_id): Unexpected befo_id value',
     );
 
@@ -241,25 +259,28 @@
       return false;
     }
 
-    return episode_class.replace(activeById[prev_id], activeById[befo_id]);
+    return episode_classes.replace(
+      activeClasses[prev_id],
+      activeClasses[befo_id],
+    );
   }
 
   function convert_to_id(episode, episode_id) {
-    const episode_class = episode.classList;
+    const episode_classes = episode.classList;
     // neutral
-    const neutral_id = is_neutral(episode_class);
-    if (null != neutral_id) {
-      neutral_to_id(episode_class, neutral_id, episode_id);
+    const neutral_identifier = isNeutral(episode_classes);
+    if (null != neutral_identifier) {
+      neutral_to_id(episode_classes, neutral_identifier, episode_id);
     }
 
-    const seen_id = is_seen(episode_class);
+    const seen_id = is_seen(episode_classes);
     if (null != seen_id) {
-      seen_to_id(episode_class, seen_id, episode_id);
+      seen_to_id(episode_classes, seen_id, episode_id);
     }
 
-    const active_id = is_active(episode_class);
+    const active_id = is_active(episode_classes);
     if (null != active_id) {
-      active_to_id(episode_class, active_id, episode_id);
+      active_to_id(episode_classes, active_id, episode_id);
     }
   }
 
@@ -309,7 +330,7 @@
         }
         convert_to_id(episode, episode_id);
 
-        if (episode.classList.contains(activeById[episode_id])) {
+        if (episode.classList.contains(activeClasses[episode_id])) {
           const top_bar_class = document.getElementById(videoTopBarId);
           AssertLib.assert(
             top_bar_class != null,
@@ -324,25 +345,25 @@
           );
           bottom_bar_class = bottom_bar_class.classList;
 
-          const neutral_id = is_neutral(top_bar_class);
-          if (neutral_id == null) {
-            top_bar_class.add(neutralById[episode_id]);
+          const neutral_identifier = isNeutral(top_bar_class);
+          if (neutral_identifier == null) {
+            top_bar_class.add(neutralClasses[episode_id]);
           } else {
-            neutral_to_id(top_bar_class, neutral_id, episode_id);
+            neutral_to_id(top_bar_class, neutral_identifier, episode_id);
           }
 
-          neutral_id = is_neutral(bottom_bar_class);
-          if (neutral_id == null) {
-            bottom_bar_class.add(neutralById[episode_id]);
+          neutral_identifier = isNeutral(bottom_bar_class);
+          if (neutral_identifier == null) {
+            bottom_bar_class.add(neutralClasses[episode_id]);
           } else {
-            neutral_to_id(bottom_bar_class, neutral_id, episode_id);
+            neutral_to_id(bottom_bar_class, neutral_identifier, episode_id);
           }
         }
       });
 
       episode.childNodes[0].style.background = 'none';
       convert_to_id(episode, episode_id);
-      if (episode.classList.contains(activeById[episode_id])) {
+      if (episode.classList.contains(activeClasses[episode_id])) {
         const top_bar_class = document.getElementById(videoTopBarId);
         AssertLib.assert(
           top_bar_class != null,
@@ -357,18 +378,18 @@
         );
         bottom_bar_class = bottom_bar_class.classList;
 
-        const neutral_id = is_neutral(top_bar_class);
-        if (neutral_id == null) {
-          top_bar_class.add(neutralById[episode_id]);
+        const neutral_identifier = isNeutral(top_bar_class);
+        if (neutral_identifier == null) {
+          top_bar_class.add(neutralClasses[episode_id]);
         } else {
-          neutral_to_id(top_bar_class, neutral_id, episode_id);
+          neutral_to_id(top_bar_class, neutral_identifier, episode_id);
         }
 
-        neutral_id = is_neutral(bottom_bar_class);
-        if (neutral_id == null) {
-          bottom_bar_class.add(neutralById[episode_id]);
+        neutral_identifier = isNeutral(bottom_bar_class);
+        if (neutral_identifier == null) {
+          bottom_bar_class.add(neutralClasses[episode_id]);
         } else {
-          neutral_to_id(bottom_bar_class, neutral_id, episode_id);
+          neutral_to_id(bottom_bar_class, neutral_identifier, episode_id);
         }
       }
     }
