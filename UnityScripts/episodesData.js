@@ -31,15 +31,15 @@ const fillerEpisodes = [
   338, 339, 340, 341, 355,
 ];
 
-const types = ['canon', 'mixed', 'filler'];
+const [canonIdx, mixedIdx, fillerIdx] = [0, 1, 2];
 
 const bleachEpisodeData = new Map();
 canonEpisodes.forEach((ep) => {
-  bleachEpisodeData.set(ep, types[0]);
+  bleachEpisodeData.set(ep, canonIdx);
 });
 mixedEpisodes.forEach((ep) => {
-  bleachEpisodeData.set(ep, types[1]);
+  bleachEpisodeData.set(ep, mixedIdx);
 });
 fillerEpisodes.forEach((ep) => {
-  bleachEpisodeData.set(ep, types[2]);
+  bleachEpisodeData.set(ep, fillerIdx);
 });
